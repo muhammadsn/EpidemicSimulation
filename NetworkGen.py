@@ -26,10 +26,7 @@ class NetworkGenerator:
         self.network = nx.random_geometric_graph(n=self.N, radius=self.R0, pos=self.nodes)
         self.edges = self.network.edges
         self.E = len(self.network.edges)
-        nx.set_node_attributes(self.network, False, "infected")
-
-
-
+        nx.set_node_attributes(self.network, False, "I")
 
 
         # infection = nx.get_node_attributes(self.network, "infected")
@@ -38,6 +35,9 @@ class NetworkGenerator:
 
     def set_node_attr(self, node_value_dict, attr):
         nx.set_node_attributes(self.network, node_value_dict, attr)
+
+    def get_node_attr(self, node, attr):
+        return nx.get_node_attributes(self.network, attr)[node]
 
     def get_nodes_with_attr(self, attr, value):
         nodes_status = nx.get_node_attributes(self.network, attr)
@@ -48,7 +48,7 @@ class NetworkGenerator:
         return result
 
     def get_node_neighbours(self, node):
-        return self.network.neighbors(node)
+        return list(self.network.neighbors(node))
 
     def get_network(self):
         return self.network
