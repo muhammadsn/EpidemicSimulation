@@ -1,17 +1,16 @@
-from NetworkGen import NetworkGenerator as ng
-# from SIMonitor import MonitoredSI
+from Simulator import Simulator
 
 
 def main():
-    param = dict()
-    param['X'] = 30
-    param['Y'] = 30
-    param['DELTA'] = 0.5
-    param['BETA'] = 0.1                    # Infection Rate (P_INFECT)
-    param['TransmissionRate'] = 5          # Mean Node Degree
-    param['NetworkGenAlg'] = 'BA'          # The Algorithm to generate network ['BA', 'ER', 'RA']
+    params = dict()
+    params['X'] = 30
+    params['Y'] = 30
+    params['DELTA'] = 0.5
+    params['BETA'] = 0.1                    # Infection Rate (P_INFECT)
+    params['TransmissionRate'] = 5          # Mean Node Degree
+    params['NetworkGenAlg'] = 'BA'          # The Algorithm to generate network ['BA', 'ER', 'RA']
 
-    a = ng()
+    a = Simulator(params=params)
     # print(rc['results'])
 
 
