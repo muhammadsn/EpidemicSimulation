@@ -29,8 +29,6 @@ class NetworkGenerator:
         self.set_nodes_to_default()
         print(f":: TOTAL NODES = {self.N}")
         print(f":: TOTAL EDGES = {self.E}")
-        # infection = nx.get_node_attributes(self.network, "infected")
-        # p = dict(nx.single_source_shortest_path_length(self.network, ncenter))
 
 
     def set_nodes_to_default(self):

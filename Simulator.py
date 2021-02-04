@@ -35,6 +35,8 @@ class Simulator:
         self.susceptible = {0: self.network.get_nodes_with_attr("I", False)}
         self.infected = {0: self.network.get_nodes_with_attr("I", True)}
         self.save_result(t=0, s=len(self.susceptible[0]), i=len(self.infected[0]))
+        if monitor:
+            self.monitor.show_network(self.network, self.X, self.Y, 0)
 
         for t in range(1, self.max_time_steps):
             new_susceptible_neighbors = []

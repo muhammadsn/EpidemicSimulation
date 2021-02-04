@@ -4,26 +4,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def paper_1(t, n=2500, beta=0.1, _r_0=2.5, _delta=1):
-    sqrt_n = np.sqrt(n)
-    frac_1 = (sqrt_n - 1) / (sqrt_n + 1)
-    frac_power = (2 * beta * (np.sqrt(_delta * np.pi) * _r_0) ** 3 * t) / sqrt_n
-    frac_power = - frac_power
-    e_to_the_power = np.exp(frac_power)
-    denominator = e_to_the_power * frac_1 + 1
-
-    return n * ((2 / denominator) - 1) ** 2
+def formula_in_paper_1(t, n=5000, r_0=5, beta=0.8, delta=0.25):
+    a = np.sqrt(n)
+    b = (a - 1) / (a + 1)
+    c = -((2 * beta * (np.sqrt(delta * np.pi) * r_0) ** 3 * t) / a)
+    d = np.exp(c)
+    e = d * b + 1
+    return n * ((2 / e) - 1) ** 2
 
 
-def paper_2(t, n=2500, beta=0.1, _r_0=2.5, _delta=1, _n=50):
-    sqrt_n = np.sqrt(n)
-    frac_1 = (sqrt_n - 1) / (sqrt_n + 1)
-    frac_power = (2 * beta * (np.sqrt(_delta * np.pi) * _r_0 * _n) * t) / sqrt_n
-    frac_power = - frac_power
-    e_to_the_power = np.exp(frac_power)
-    denominator = e_to_the_power * frac_1 + 1
-
-    return n * ((2 / denominator) - 1) ** 2
+def formula_in_paper_2(t, n=5000, r_0=5, beta=0.8, delta=0.25, eta=19):
+    a = np.sqrt(n)
+    b = (a - 1) / (a + 1)
+    c = -((2 * beta * (np.sqrt(delta * np.pi) * r_0 * eta) * t) / a)
+    d = np.exp(c)
+    e = d * b + 1
+    return n * ((2 / e) - 1) ** 2
 
 
 def runner():
@@ -51,22 +47,31 @@ def runner():
             df[f'b{b}'] += result['i']
         df[f'b{b}'] = df[f'b{b}'] / iterations
         df.to_json('results.json', orient='table')
-        # plt.plot(df['t'].tolist(), df[f'b{b}'].tolist(), label=f'BETA = {b}', color=colors[beta_vals.index(b)])
 
-    # plt.legend()
-    # plt.show()
 
 
 
 if __name__ == '__main__':
-    # runner()
-    #
-    vec_func1 = np.vectorize(paper_1)
-    vec_func2 = np.vectorize(paper_2)
-    x = np.array(range(100))
+    runner()
+
+    res = pd.read_json('results.json', orient="table")
+    plt.plot(res['t'], res['b0.1'], label=r'My Simulation $\beta$ = 0.1', color='red')
+    plt.plot(res['t'], res['b0.5'], label=r'My Simulation $\beta$ = 0.5', color='green')
+    plt.plot(res['t'], res['b0.8'], label=r'My Simulation $\beta$ = 0.8', color='blue')
+
+    vec_func1 = np.vectorize(formula_in_paper_1)
+    vec_func2 = np.vectorize(formula_in_paper_2)
+    x = np.array(range(120))
     y1 = vec_func1(x)
     y2 = vec_func2(x)
 
-    plt.plot(x, y1)
-    plt.plot(x, y2)
+    plt.plot(x, y1, label="First Paper Formula", color="teal")
+    plt.plot(x, y2, label="Second Paper Formula", color="orange")
+
+    plt.xlabel("Time")
+    plt.ylabel("Infected")
+    # plt.title(r"I(t) curves for different values of $\beta$")
+    plt.title(r"I(t) curves for $\beta$ = 0.8")
+    plt.grid(axis='y')
+    plt.legend()
     plt.show()

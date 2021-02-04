@@ -1,8 +1,5 @@
 import networkx as nx
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
-from NetworkGen import NetworkGenerator as NG
 
 
 class Monitor:
@@ -24,23 +21,22 @@ class Monitor:
                 node_color_map.append('#000000')
 
         plt.figure(figsize=(5, 5))
-        # nx.draw_networkx_edges(self.simulation_network, nodes, alpha=0.4)
-        nx.draw(
+        # nx.draw(                  # If you want to see edges for simulated network uncomment this line
+        nx.draw_networkx_nodes(     # and comment this line (not recommended though)
             self.simulation_network,
             nodes,
             nodelist=list(nodes.keys()),
             node_size=20,
             node_color=node_color_map,
-            # with_labels=True
+            # with_labels=True      # Uncomment to see nodes' numbers on map
         )
 
         plt.xlim(0, X)
         plt.ylim(0, Y)
-        # plt.axis("off")
         xticks = [x for x in range(X)]
         yticks = [x for x in range(Y)]
         plt.xticks(ticks=xticks)
         plt.yticks(ticks=yticks)
-        # plt.title(f"Infected Nodes in t = {str(t)}")
+        plt.title(f"Infected Nodes in t = {str(t)}")
         plt.grid()
         plt.show()
