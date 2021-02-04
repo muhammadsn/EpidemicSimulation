@@ -12,12 +12,12 @@ class NetworkGenerator:
     N = 0
     E = 0
 
-    def __init__(self, X, Y, Density):
+    def __init__(self, X, Y, R0, Density):
         self.X = X
         self.Y = Y
         self.DELTA = Density
         self.N = int(self.X * self.Y * self.DELTA)
-        self.R0 = 1 / self.DELTA
+        self.R0 = R0
         self.nodes = {i: (random.uniform(0, self.X), random.uniform(0, self.Y)) for i in range(self.N)}
         self.build()
 
@@ -26,12 +26,15 @@ class NetworkGenerator:
         self.network = nx.random_geometric_graph(n=self.N, radius=self.R0, pos=self.nodes)
         self.edges = self.network.edges
         self.E = len(self.network.edges)
-        nx.set_node_attributes(self.network, False, "I")
-
-
+        self.set_nodes_to_default()
+        print(f":: TOTAL NODES = {self.N}")
+        print(f":: TOTAL EDGES = {self.E}")
         # infection = nx.get_node_attributes(self.network, "infected")
         # p = dict(nx.single_source_shortest_path_length(self.network, ncenter))
 
+
+    def set_nodes_to_default(self):
+        nx.set_node_attributes(self.network, False, "I")
 
     def set_node_attr(self, node_value_dict, attr):
         nx.set_node_attributes(self.network, node_value_dict, attr)
